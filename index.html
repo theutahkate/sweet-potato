@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Sweet Potato | Track Your Shows</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/normalize.css" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="css/styles.css" media="screen" charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+
+  <body>
+    <header>
+      <h1 class="heading__tier-1">Sweet Potato - Track Your Shows</h1>
+    </header>
+
+    <main>
+      <section class="show__add">
+        <h2 class="heading__tier-2">Add a Show</h2>
+        <form id="addShowForm">
+
+          <label class="form__label">Show Title
+            <input id="addShowTitle" type="text" class="form__field">
+          </label>
+
+          <input id="addShowSubmit" type="submit" class="btn" value="Add To List">
+        </form>
+      </section>
+
+      <section class="show__display">
+        <h2 class="heading__tier-2">List of Shows</h2>
+        <ul class="show__list">
+        </ul>
+      </section>
+
+    </main>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+
+</html>
