@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Sweet Potato | Track Your Shows</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/normalize.css" media="screen" charset="utf-8">
+    <!-- <link rel="stylesheet" href="css/normalize.css" media="screen" charset="utf-8"> -->
     <link rel="stylesheet" href="css/styles.css" media="screen" charset="utf-8">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +20,6 @@
       <section class="show__add">
         <h2 class="heading__tier-2">Add a Show</h2>
         <form id="addShowForm">
-
           <label class="form__label">Show Title
             <input id="addShowTitle" type="text" class="form__field">
           </label>
@@ -29,10 +28,25 @@
         </form>
       </section>
 
+      <section class="search">
+        <h2 class="heading__tier-2">Find a Show</h2>
+        <form id="searchForm">
+          <label class="form__label">Search Shows
+            <input id="searchTitle" type="text" class="form__field">
+          </label>
+
+          <input id="searchSubmit" type="submit" class="btn" value="Search Shows">
+        </form>
+
+        <div class="search__results">
+          <ul class="search__list"></ul>
+        </div>
+
+      </section>
+
       <section class="show__display">
         <h2 class="heading__tier-2">List of Shows</h2>
-        <ul class="show__list">
-        </ul>
+        <ul class="show__list"></ul>
       </section>
 
     </main>
