@@ -20,7 +20,7 @@ addShowForm.addEventListener("submit", () => {
     show: showTitle,
   });
 
-  addShowTitle = "";
+  titleInput = "";
 })
 
 database.ref("shows").on("value", (results) => {
@@ -57,14 +57,25 @@ let searchApi = query => {
 
 	    const	ul = document.querySelector('.search__list');
 
-			data.forEach(function(element) {
-				console.log(element)
+			data.forEach( (element) => {
 				const li = document.createElement('li');
-				let searchTitle = element.name,
-						searchImg = baseImgUrl + element.poster_path;
-	 			li.innerHTML = `<img src='${searchImg}'><h3>${searchTitle}</h3>`;
+				let searchImg = baseImgUrl + element.poster_path,
+						searchTitle = element.name;
+	 			li.innerHTML = `<img src='${searchImg}'><h3>${searchTitle}</h3><button class="fa fa-plus">Add ${searchTitle}</button>`;
 	 			ul.appendChild(li);
+	 		})
 
+	 		let buttons = document.querySelectorAll(".fa-plus");
+	 		buttons.forEach((element) => {
+	 			element.addEventListener("click", function() {
+	 				event.preventDefault();
+	 				let showTitle = element.previousSibling.innerHTML;
+					let dbReference = firebase.database().ref('shows');
+				  dbReference.push({
+				    show: showTitle,
+				  });
+
+	 			})
 	 		})
 	  }
 	});
@@ -84,7 +95,34 @@ searchForm.addEventListener("submit", () => {
 	searchApi(queryString);
 });
 
+// ====================
 
+let getShowApi = showApiId => {
+	console.log(showApiId)
+
+	const	tvApiKey = "83b69fac3083f5a6ee97e1a82975d97f";
+
+	let data = "{}",
+			url = `https://api.themoviedb.org/3/tv/${showApiId}?api_key=${tvApiKey}&language=en-US`;
+	console.log(url)
+
+	let xhr = new XMLHttpRequest();
+	// xhr.withCredentials = true;
+
+	xhr.addEventListener("readystatechange", function () {
+	  if (this.readyState === this.DONE) {
+	    data = JSON.parse(this.responseText);
+
+	    console.log(data)
+			// getstatus, next_episode_to_air, genres, overview?
+
+	  }
+	});
+
+	xhr.open("GET", url);
+
+	xhr.send(data);
+}
 
 
 
