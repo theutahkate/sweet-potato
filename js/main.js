@@ -4,45 +4,14 @@ firebase.initializeApp(config);
 
 const database = firebase.database();
 
-// DOM Elements
-const addShowForm = document.getElementById("addShowForm"),
-			titleInput = document.getElementById("addShowTitle"),
-			addShowSubmit = document.getElementById("addShowSubmit"),
-			ul = document.querySelector(".show__list");
-let showTitle = "";
-
-addShowForm.addEventListener("submit", () => {
-	event.preventDefault();
-	showTitle = titleInput.value;
-
-	let dbReference = firebase.database().ref('shows');
-  dbReference.push({
-    show: showTitle,
-  });
-
-  titleInput = "";
-})
-
-database.ref("shows").on("value", (results) => {
-	ul.innerHTML = "";
-	let allShows = results.val();
-	for (var showID in allShows) {
-		let li = document.createElement('li'),
-				listTitle = allShows[showID].show;
-		li.innerHTML = `<h3 class="show__title">${listTitle}</h3>`;
-		ul.appendChild(li);
-	}
-})
-
-
 // API
 
 let searchApi = query => {
 
 	let data = "{}";
 
-	const	baseImgUrl = "https://image.tmdb.org/t/p/w200_and_h300_bestv2";
-
+	const	baseImgUrl = "https://image.tmdb.org/t/p/w200_and_h300_bestv2",
+				tvApiKey = "83b69fac3083f5a6ee97e1a82975d97f";
 	let url = `https://api.themoviedb.org/3/search/tv?api_key=${tvApiKey}&language=en-US&query=${query}&page=1`;
 
 
@@ -93,32 +62,40 @@ let buttonator = () => {
 	buttons.forEach( element => {
 		element.addEventListener("click", function() {
 			event.preventDefault();
-			let parentDiv = element.parentNode,
-					h3 = element.previousElementSibling,
-					imgTag = parentDiv.previousElementSibling;
-					showTitle = h3.innerHTML,
-					tmdbId = h3.getAttribute('data-id'),
-					imgSrc = imgTag.getAttribute('src');
-			console.log(imgTag)
-			console.log(h3)
-			console.log(parentDiv)
 
-		let dbReference = firebase.database().ref('shows');
-	  dbReference.push({
-	    show: showTitle,
-	    tmdb_id: tmdbId,
-	    img: imgSrc
-	  });
+			let h3 = element.previousElementSibling,
+					tmdbId = h3.getAttribute("data-id");
 
+			getShowApi(tmdbId);
 		})
 	})
 }
 
+database.ref("shows").on("value", (results) => {
+	const showUl = document.querySelector('.tv-show__list');
+	showUl.innerHTML = "";
+	let allShows = results.val();
+	for (var showID in allShows) {
+		let showLi = document.createElement('li'),
+				listTitle = allShows[showID].show,
+				nextEp = allShows[showID].next_ep,
+				imgSrc = allShows[showID].img;
+
+    showLi.className = 'li__card';
+		showLi.innerHTML = `<img class='li__card--img' src='${imgSrc}'>
+												<div class='li__card--content'>
+													<h3>${listTitle}</h3>
+													<p>${nextEp}</p>
+												</div>`;
+		showUl.appendChild(showLi);
+	}
+})
 
 let getShowApi = showApiId => {
 	console.log(showApiId)
 
-	const	tvApiKey = "83b69fac3083f5a6ee97e1a82975d97f";
+	const	baseImgUrl = "https://image.tmdb.org/t/p/w400_and_h600_bestv2",
+				tvApiKey = "83b69fac3083f5a6ee97e1a82975d97f";
 
 	let data = "{}",
 			url = `https://api.themoviedb.org/3/tv/${showApiId}?api_key=${tvApiKey}&language=en-US`;
@@ -132,8 +109,20 @@ let getShowApi = showApiId => {
 	    data = JSON.parse(this.responseText);
 
 	    console.log(data)
-			// getstatus, next_episode_to_air, genres, overview?
-
+	    let showTitle = data.name,
+					imgDefault = 'http://placekitten.com/g/400/600',
+					imgSrc = `${baseImgUrl}${data.poster_path}` || imgDefault,
+					// desc = data.overview,
+					next_ep = data.next_episode_to_air || 'No episode scheduled';
+					// genres = [];
+	    let dbReference = firebase.database().ref('shows');
+		  dbReference.push({
+		    show: showTitle,
+		    tmdb_id: showApiId,
+		    img: imgSrc,
+		    status: status,
+		    next_ep: next_ep
+		  });
 	  }
 	});
 
@@ -141,6 +130,3 @@ let getShowApi = showApiId => {
 
 	xhr.send(data);
 }
-
-
-
