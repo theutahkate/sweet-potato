@@ -41,11 +41,9 @@ let searchApi = query => {
 
 	let data = "{}";
 
-	const	baseImgUrl = "https://image.tmdb.org/t/p/w200_and_h300_bestv2",
-				baseUrl = "https://api.themoviedb.org/3/search/tv?api_key=",
-				middleUrl = "&language=en-US&query=",
-				endUrl = "&page=1";
-	let url = `${baseUrl}${tvApiKey}${middleUrl}${query}${endUrl}`;
+	const	baseImgUrl = "https://image.tmdb.org/t/p/w200_and_h300_bestv2";
+
+	let url = `https://api.themoviedb.org/3/search/tv?api_key=${tvApiKey}&language=en-US&query=${query}&page=1`;
 
 
 	let xhr = new XMLHttpRequest();
@@ -61,22 +59,17 @@ let searchApi = query => {
 				const li = document.createElement('li');
 				let searchImg = baseImgUrl + element.poster_path,
 						searchTitle = element.name;
-	 			li.innerHTML = `<img src='${searchImg}'><h3>${searchTitle}</h3><button class="fa fa-plus">Add ${searchTitle}</button>`;
+						id = element.id;
+
+        li.className = 'li__card';
+				li.innerHTML = `<img class='li__card--img' src='${searchImg}'>
+													<div class='li__card--content'>
+													<h3 data-id='${id}'>${searchTitle}</h3>
+													<button class="fa fa-plus add-btn">Add To List</button>
+												</div>`;
 	 			ul.appendChild(li);
 	 		})
-
-	 		let buttons = document.querySelectorAll(".fa-plus");
-	 		buttons.forEach((element) => {
-	 			element.addEventListener("click", function() {
-	 				event.preventDefault();
-	 				let showTitle = element.previousSibling.innerHTML;
-					let dbReference = firebase.database().ref('shows');
-				  dbReference.push({
-				    show: showTitle,
-				  });
-
-	 			})
-	 		})
+ 			buttonator();
 	  }
 	});
 
@@ -95,7 +88,32 @@ searchForm.addEventListener("submit", () => {
 	searchApi(queryString);
 });
 
-// ====================
+let buttonator = () => {
+	let buttons = document.querySelectorAll(".add-btn");
+	buttons.forEach( element => {
+		element.addEventListener("click", function() {
+			event.preventDefault();
+			let parentDiv = element.parentNode,
+					h3 = element.previousElementSibling,
+					imgTag = parentDiv.previousElementSibling;
+					showTitle = h3.innerHTML,
+					tmdbId = h3.getAttribute('data-id'),
+					imgSrc = imgTag.getAttribute('src');
+			console.log(imgTag)
+			console.log(h3)
+			console.log(parentDiv)
+
+		let dbReference = firebase.database().ref('shows');
+	  dbReference.push({
+	    show: showTitle,
+	    tmdb_id: tmdbId,
+	    img: imgSrc
+	  });
+
+		})
+	})
+}
+
 
 let getShowApi = showApiId => {
 	console.log(showApiId)
