@@ -73,21 +73,14 @@ let buttonator = () => {
 }
 
 database.ref("shows").on("value", (results) => {
-	const showUl = document.querySelector('.tv-show__list');
+	const showUl = document.querySelector('.side-shows__list');
 	showUl.innerHTML = "";
 	let allShows = results.val();
 	for (var showID in allShows) {
 		let showLi = document.createElement('li'),
-				listTitle = allShows[showID].show,
-				nextEp = allShows[showID].next_ep,
-				imgSrc = allShows[showID].img;
+				listTitle = allShows[showID].show;
 
-    showLi.className = 'li__card';
-		showLi.innerHTML = `<img class='li__card--img' src='${imgSrc}'>
-												<div class='li__card--content'>
-													<h3>${listTitle}</h3>
-													<p>${nextEp}</p>
-												</div>`;
+		showLi.innerHTML = `<h3>${listTitle}</h3>`;
 		showUl.appendChild(showLi);
 	}
 })
