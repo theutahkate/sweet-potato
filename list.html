@@ -14,34 +14,17 @@
 
   <body>
     <header>
-      <h1 class="heading__tier-1">Sweet Potato - Track Your Shows</h1>
+      <h1 class="heading__tier-1">Sweet Potato Show List</h1>
     </header>
-
-    <main>
-      <section class="search">
-        <h2 class="heading__tier-2">Find a Show</h2>
-        <form id="searchForm">
-          <label class="form__label">Search Shows
-            <input id="searchTitle" type="text" class="form__field">
-          </label>
-
-          <input id="searchSubmit" type="submit" class="btn" value="Search Shows">
-        </form>
-
-        <div class="search__results">
-          <ul class="search__list"></ul>
-        </div>
-
-      </section>
-
-      <section class="tv-show__display">
+    <main role="main">
+      <section>
         <h2 class="heading__tier-2">List of Shows</h2>
         <ul class="tv-show__list"></ul>
       </section>
-
     </main>
-    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
-    <script src="js/main.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+  <script src="js/list.js"></script>
   </body>
 </html>

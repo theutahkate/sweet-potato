@@ -23,6 +23,7 @@ let searchApi = query => {
 	    data = JSON.parse(this.responseText).results;
 
 	    const	ul = document.querySelector('.search__list');
+	    ul.innerHTML = '';
 
 			data.forEach( (element) => {
 				const li = document.createElement('li');
@@ -94,7 +95,7 @@ database.ref("shows").on("value", (results) => {
 let getShowApi = showApiId => {
 	console.log(showApiId)
 
-	const	baseImgUrl = "https://image.tmdb.org/t/p/w400_and_h600_bestv2",
+	const	baseImgUrl = "https://image.tmdb.org/t/p/w200_and_h300_bestv2",
 				tvApiKey = "83b69fac3083f5a6ee97e1a82975d97f";
 
 	let data = "{}",
@@ -108,9 +109,8 @@ let getShowApi = showApiId => {
 	  if (this.readyState === this.DONE) {
 	    data = JSON.parse(this.responseText);
 
-	    console.log(data)
 	    let showTitle = data.name,
-					imgDefault = 'http://placekitten.com/g/400/600',
+					imgDefault = 'http://placekitten.com/g/200/300',
 					imgSrc = `${baseImgUrl}${data.poster_path}` || imgDefault,
 					// desc = data.overview,
 					next_ep = data.next_episode_to_air || 'No episode scheduled';
