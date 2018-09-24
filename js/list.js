@@ -1,3 +1,5 @@
+const dayOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
 database.ref("shows").on("value", (results) => {
 	const showUl = document.querySelector('.tv-show__list');
 	showUl.innerHTML = "";
@@ -6,15 +8,15 @@ database.ref("shows").on("value", (results) => {
 		let showLi = document.createElement('li'),
 				listTitle = allShows[showID].show,
 				nextEpInfo = allShows[showID].next_ep,
+				nextEpDate = dateFormatter(nextEpInfo.air_date),
 				nextEpHtml = '',
 				imgSrc = allShows[showID].img;
-
     showLi.className = 'li__card';
 
     if (typeof nextEpInfo === 'string') {
     	nextEpHtml = '<p>No new episodes scheduled</p>';
     } else {
-    	nextEpHtml = `<p>${nextEpInfo.air_date}</p>
+			nextEpHtml = `<p>${nextEpDate}</p>
 										<p>${nextEpInfo.name}</p>
 										<p>${nextEpInfo.overview}</p>`;
     }
@@ -30,3 +32,11 @@ database.ref("shows").on("value", (results) => {
 	}
 	deletinator();
 })
+
+function dateFormatter(dateObj) {
+	let date = new Date(dateObj),
+			weekday = dayOfWeek[date.getDay()],
+			month = date.getMonth()+1;
+			displayDate = `${weekday}, ${month}/${date.getDate()}/${date.getFullYear()}`;
+  return displayDate;
+}
