@@ -80,9 +80,11 @@ database.ref("shows").on("value", (results) => {
 		let showLi = document.createElement('li'),
 				listTitle = allShows[showID].show;
 
-		showLi.innerHTML = `<h3>${listTitle}</h3>`;
+		showLi.setAttribute('data-id', `${showID}`);
+		showLi.innerHTML = `<h3>${listTitle}</h3><span class="remove-btn"><i class="fa fa-times-circle-o" aria-hidden="true"></i></span>`;
 		showUl.appendChild(showLi);
 	}
+	deletinator();
 })
 
 let getShowApi = showApiId => {
@@ -122,4 +124,16 @@ let getShowApi = showApiId => {
 	xhr.open("GET", url);
 
 	xhr.send(data);
+}
+
+const deletinator = () => {
+	const toDelete = document.querySelectorAll('.remove-btn');
+	toDelete.forEach(element => {
+		element.addEventListener('click', function() {
+			let deleteLi = this.parentNode,
+					dataId = deleteLi.getAttribute('data-id'),
+					showsReference = database.ref('shows/' + dataId);
+			showsReference.remove();
+		})
+	})
 }
